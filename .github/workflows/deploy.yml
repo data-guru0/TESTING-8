@@ -17,6 +17,9 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    container:  # ✅ Use Google Cloud SDK image
+      image: google/cloud-sdk:latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -35,11 +38,6 @@ jobs:
         run: |
           docker build -t $IMAGE:$GITHUB_SHA .
           docker push $IMAGE:$GITHUB_SHA
-
-      - name: Install gke-gcloud-auth-plugin  # ✅ FIXED: Install via gcloud
-        run: |
-          gcloud components install gke-gcloud-auth-plugin
-          gcloud components update
 
       - name: Get GKE Credentials
         run: |
